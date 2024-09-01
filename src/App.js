@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import SignupPage from './components/pages/SignupPage.js';
-import LoginPage from './components/pages/LoginPage.js';
+import SignupPage from './components/minipages/SignupPage.js';
+import LoginPage from './components/minipages/LoginPage.js';
 import Dashboard from './pages/Dashboard.js'; // Example Dashboard component
 
 function App() {

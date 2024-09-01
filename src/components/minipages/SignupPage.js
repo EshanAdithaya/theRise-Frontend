@@ -1,12 +1,19 @@
 // src/pages/SignupPage.jsx
 
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 
 // Mock data for provinces and districts
 const provinceDistricts = {
   Western: ['Colombo', 'Gampaha', 'Kalutara'],
   Central: ['Kandy', 'Matale', 'Nuwara Eliya'],
-  // Add other provinces and their districts here
+  Southern: ['Galle', 'Matara', 'Hambantota'],
+  Northern: ['Jaffna', 'Kilinochchi', 'Mannar', 'Mullaitivu', 'Vavuniya'],
+  North_Western: ['Kurunegala', 'Puttalam'],
+  North_Central: ['Anuradhapura', 'Polonnaruwa'],
+  Uva: ['Badulla', 'Monaragala'],
+  Sabaragamuwa: ['Ratnapura', 'Kegalle'],
+  Eastern: ['Batticaloa', 'Ampara', 'Trincomalee'],
 };
 
 const SignupPage = () => {
@@ -161,6 +168,14 @@ const SignupPage = () => {
             Sign Up
           </button>
         </form>
+
+        {/* Link to Login Page */}
+        <p className="mt-4 text-center">
+          Already have an account?{' '}
+          <Link to="/" className="text-blue-500 hover:underline">
+            Login here
+          </Link>
+        </p>
       </div>
     </div>
   );

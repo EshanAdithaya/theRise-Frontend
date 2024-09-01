@@ -1,10 +1,10 @@
 // src/pages/LoginPage.jsx
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Import Link and useNavigate from react-router-dom
 
 const LoginPage = () => {
-  const [email, setEmail] = useState('');
+  const [nic, setNic] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
@@ -12,7 +12,7 @@ const LoginPage = () => {
     e.preventDefault();
     // Add login logic here (e.g., API call)
     // If successful:
-    console.log('Logged in with:', { email, password });
+    console.log('Logged in with:', { nic, password });
     navigate('/dashboard'); // Redirect to dashboard after login
   };
 
@@ -21,13 +21,13 @@ const LoginPage = () => {
       <div className="w-full max-w-md bg-white rounded-lg shadow-md p-8">
         <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
         <form onSubmit={handleLogin}>
-          {/* Email */}
+          {/* NIC */}
           <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="text"
+            name="nic"
+            placeholder="NIC"
+            value={nic}
+            onChange={(e) => setNic(e.target.value)}
             className="w-full p-2 mb-4 border border-gray-300 rounded"
             required
           />
@@ -51,6 +51,14 @@ const LoginPage = () => {
             Login
           </button>
         </form>
+
+        {/* Link to Signup Page */}
+        <p className="mt-4 text-center">
+          Don't have an account?{' '}
+          <Link to="/signup" className="text-blue-500 hover:underline">
+            Sign up here
+          </Link>
+        </p>
       </div>
     </div>
   );
