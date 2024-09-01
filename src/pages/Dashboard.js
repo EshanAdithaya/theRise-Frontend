@@ -8,9 +8,9 @@ const Dashboard = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen bg-slate-100">
       {/* Sidebar */}
-      <Sidebar />
+      <Sidebar className="" />
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
