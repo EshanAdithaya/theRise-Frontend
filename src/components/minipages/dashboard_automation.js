@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { FaWater, FaLeaf, FaThermometerHalf, FaTint, FaBell, FaQuestionCircle } from 'react-icons/fa';
+import { FaBell, FaQuestionCircle } from 'react-icons/fa';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import IrrigationControl from './IrrigationControl';
+import FertilizerControl from './FertilizerControl';
+import TemperatureControl from './TemperatureControl';
+import HumidityControl from './HumidityControl';
 
 // Custom Alert component
 const Alert = ({ children, variant = "warning" }) => {
@@ -25,10 +29,6 @@ const mockChartData = [
 ];
 
 const AutomationDashboard = () => {
-  const [wateringSchedule, setWateringSchedule] = useState('Every 6 hours');
-  const [fertilizerFrequency, setFertilizerFrequency] = useState('Weekly on Mondays');
-  const [temperatureRange, setTemperatureRange] = useState([20, 25]);
-  const [humidityLevel, setHumidityLevel] = useState(50);
   const [alerts, setAlerts] = useState([]);
 
   useEffect(() => {
@@ -45,23 +45,9 @@ const AutomationDashboard = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const handleWateringChange = (e) => setWateringSchedule(e.target.value);
-  const handleFertilizerChange = (e) => setFertilizerFrequency(e.target.value);
-  const handleTemperatureChange = (index, value) => {
-    const newRange = [...temperatureRange];
-    newRange[index] = Number(value);
-    setTemperatureRange(newRange);
-  };
-  const handleHumidityChange = (e) => setHumidityLevel(Number(e.target.value));
-
   const handleSaveSettings = () => {
-    console.log('Saving settings:', {
-      wateringSchedule,
-      fertilizerFrequency,
-      temperatureRange,
-      humidityLevel,
-    });
-    alert('Settings saved successfully!');
+    console.log('Saving all settings');
+    alert('All settings saved successfully!');
   };
 
   return (
@@ -112,108 +98,11 @@ const AutomationDashboard = () => {
             </div>
           </div>
 
-          {/* Irrigation Control */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold text-blue-600 flex items-center mb-4">
-              <FaWater className="mr-2" />
-              Irrigation Control
-            </h2>
-            <label htmlFor="watering-schedule" className="block mb-2 text-gray-700">Schedule:</label>
-            <input
-              id="watering-schedule"
-              type="text"
-              value={wateringSchedule}
-              onChange={handleWateringChange}
-              className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-300 outline-none mb-4"
-            />
-            <div className="flex justify-between items-center">
-              <span className="text-gray-700">Current Soil Moisture:</span>
-              <span className="font-semibold">58%</span>
-            </div>
-            <button className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
-              Activate Irrigation Now
-            </button>
-          </div>
-
-          {/* Fertilizer Control */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold text-green-600 flex items-center mb-4">
-              <FaLeaf className="mr-2" />
-              Fertilizer Control
-            </h2>
-            <label htmlFor="fertilizer-frequency" className="block mb-2 text-gray-700">Frequency:</label>
-            <input
-              id="fertilizer-frequency"
-              type="text"
-              value={fertilizerFrequency}
-              onChange={handleFertilizerChange}
-              className="w-full p-2 border rounded focus:ring-2 focus:ring-green-300 outline-none mb-4"
-            />
-            <div className="flex justify-between items-center">
-              <span className="text-gray-700">Last Application:</span>
-              <span className="font-semibold">2 days ago</span>
-            </div>
-            <button className="mt-4 bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
-              Apply Fertilizer Now
-            </button>
-          </div>
-
-          {/* Temperature Control */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold text-red-600 flex items-center mb-4">
-              <FaThermometerHalf className="mr-2" />
-              Temperature Control
-            </h2>
-            <div className="flex justify-between items-center mb-2">
-              <label htmlFor="temp-min" className="text-gray-700">Min Temperature (°C):</label>
-              <input
-                id="temp-min"
-                type="number"
-                value={temperatureRange[0]}
-                onChange={(e) => handleTemperatureChange(0, e.target.value)}
-                className="w-20 p-1 border rounded focus:ring-2 focus:ring-red-300 outline-none"
-              />
-            </div>
-            <div className="flex justify-between items-center mb-4">
-              <label htmlFor="temp-max" className="text-gray-700">Max Temperature (°C):</label>
-              <input
-                id="temp-max"
-                type="number"
-                value={temperatureRange[1]}
-                onChange={(e) => handleTemperatureChange(1, e.target.value)}
-                className="w-20 p-1 border rounded focus:ring-2 focus:ring-red-300 outline-none"
-              />
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-700">Current Temperature:</span>
-              <span className="font-semibold">23°C</span>
-            </div>
-          </div>
-
-          {/* Humidity Control */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold text-cyan-600 flex items-center mb-4">
-              <FaTint className="mr-2" />
-              Humidity Control
-            </h2>
-            <label htmlFor="humidity-level" className="block mb-2 text-gray-700">Target Humidity Level (%):</label>
-            <input
-              id="humidity-level"
-              type="range"
-              min="0"
-              max="100"
-              value={humidityLevel}
-              onChange={handleHumidityChange}
-              className="w-full mb-2"
-            />
-            <div className="text-center mb-4 text-sm text-gray-600">
-              {humidityLevel}%
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-gray-700">Current Humidity:</span>
-              <span className="font-semibold">45%</span>
-            </div>
-          </div>
+          {/* Control Components */}
+          <IrrigationControl />
+          <FertilizerControl />
+          <TemperatureControl />
+          <HumidityControl />
         </div>
 
         {/* Charts */}
