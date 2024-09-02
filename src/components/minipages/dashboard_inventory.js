@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { FaPlus } from 'react-icons/fa';
+import InventoryList from './InventoryList';
+import InventoryOverview from './InventoryOverview';
+import AddItemForm from './AddItemForm';
+import Modal from './Modal';
 
 const InventoryManagement = () => {
   const [inventory, setInventory] = useState([]);
-  const [newItem, setNewItem] = useState({
-    name: '',
-    quantity: 0,
-    category: '',
-  });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    // Fetch initial inventory data from the server
     fetchInventory();
   }, []);
 
@@ -23,32 +23,21 @@ const InventoryManagement = () => {
     }
   };
 
-  const handleInputChange = (e) => {
-    setNewItem({
-      ...newItem,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const addToInventory = async () => {
+  const handleAddItem = async (newItem) => {
     try {
-      await axios.post('/api/inventory', newItem);
-      setInventory([...inventory, newItem]);
-      setNewItem({
-        name: '',
-        quantity: 0,
-        category: '',
-      });
+      const response = await axios.post('/api/inventory', newItem);
+      setInventory([...inventory, response.data]);
+      setIsModalOpen(false);
     } catch (error) {
       console.error('Error adding item to inventory:', error);
     }
   };
 
-  const updateInventory = async (item) => {
+  const handleUpdateItem = async (updatedItem) => {
     try {
-      await axios.put(`/api/inventory/${item.id}`, item);
-      const updatedInventory = inventory.map((i) =>
-        i.id === item.id ? item : i
+      await axios.put(`/api/inventory/${updatedItem.id}`, updatedItem);
+      const updatedInventory = inventory.map((item) =>
+        item.id === updatedItem.id ? updatedItem : item
       );
       setInventory(updatedInventory);
     } catch (error) {
@@ -56,10 +45,10 @@ const InventoryManagement = () => {
     }
   };
 
-  const deleteFromInventory = async (item) => {
+  const handleDeleteItem = async (itemId) => {
     try {
-      await axios.delete(`/api/inventory/${item.id}`);
-      const updatedInventory = inventory.filter((i) => i.id !== item.id);
+      await axios.delete(`/api/inventory/${itemId}`);
+      const updatedInventory = inventory.filter((item) => item.id !== itemId);
       setInventory(updatedInventory);
     } catch (error) {
       console.error('Error deleting item from inventory:', error);
@@ -67,101 +56,33 @@ const InventoryManagement = () => {
   };
 
   return (
-    <div className="p-6 bg-white min-h-screen rounded-md">
-      <div className="container mx-auto">
-        <h1 className="text-3xl font-bold mb-6">Inventory Management</h1>
-
-        <div className="bg-white p-4 rounded shadow-md mb-6">
-          <h2 className="text-xl font-semibold mb-4">Add New Item</h2>
-          <form onSubmit={(e) => {
-            e.preventDefault();
-            addToInventory();
-          }}>
-            <div className="mb-4">
-              <label htmlFor="name" className="block font-medium mb-2">
-                Name:
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={newItem.name}
-                onChange={handleInputChange}
-                className="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="quantity" className="block font-medium mb-2">
-                Quantity:
-              </label>
-              <input
-                type="number"
-                id="quantity"
-                name="quantity"
-                value={newItem.quantity}
-                onChange={handleInputChange}
-                className="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="category" className="block font-medium mb-2">
-                Category:
-              </label>
-              <input
-                type="text"
-                id="category"
-                name="category"
-                value={newItem.category}
-                onChange={handleInputChange}
-                className="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              />
-            </div>
-            <button
-              type="submit"
-              className="bg-indigo-500 text-white px-4 py-2 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-            >
-              Add to Inventory
-            </button>
-          </form>
-        </div>
-
-        <div className="bg-white p-4 rounded shadow-md">
-          <h2 className="text-xl font-semibold mb-4">Current Inventory</h2>
-          <table className="w-full">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="px-4 py-2 text-left">Name</th>
-                <th className="px-4 py-2 text-left">Quantity</th>
-                <th className="px-4 py-2 text-left">Category</th>
-                <th className="px-4 py-2 text-left">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {inventory.map((item) => (
-                <tr key={item.id} className="border-b">
-                  <td className="px-4 py-2">{item.name}</td>
-                  <td className="px-4 py-2">{item.quantity}</td>
-                  <td className="px-4 py-2">{item.category}</td>
-                  <td className="px-4 py-2">
-                    <button
-                      className="bg-indigo-500 text-white px-2 py-1 rounded-md hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 mr-2"
-                      onClick={() => updateInventory(item)}
-                    >
-                      Update
-                    </button>
-                    <button
-                      className="bg-red-500 text-white px-2 py-1 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-                      onClick={() => deleteFromInventory(item)}
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8">Inventory Management</h1>
+      <InventoryOverview inventory={inventory} />
+      <div className="mt-8 mb-4">
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+        >
+          <FaPlus className="mr-2" />
+          Add New Item
+        </button>
       </div>
+      <InventoryList
+        inventory={inventory}
+        onUpdateItem={handleUpdateItem}
+        onDeleteItem={handleDeleteItem}
+      />
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Add New Item"
+      >
+        <AddItemForm
+          onAddItem={handleAddItem}
+          onCancel={() => setIsModalOpen(false)}
+        />
+      </Modal>
     </div>
   );
 };

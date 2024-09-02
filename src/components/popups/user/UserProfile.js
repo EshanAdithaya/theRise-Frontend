@@ -1,8 +1,7 @@
-// UserProfile.js
 import React, { useState, useEffect } from 'react';
 import Sidebar from './Sidebar';
 import UserInfo from './UserInfo';
-import SocialAccounts from './SocialAccounts';
+import IoTDevices from './IoTDevices';
 import PaymentInfo from './PaymentInfo';
 import SystemLog from './SystemLog';
 
@@ -31,8 +30,8 @@ const UserProfile = ({ isOpen, onClose, onLogout }) => {
     switch (activePage) {
       case 'account':
         return <UserInfo />;
-      case 'socialAccounts':
-        return <SocialAccounts />;
+      case 'iotDevices':
+        return <IoTDevices />;
       case 'paymentInfo':
         return <PaymentInfo />;
       case 'systemLog':
@@ -44,16 +43,16 @@ const UserProfile = ({ isOpen, onClose, onLogout }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div 
+      <div
         className="bg-white rounded-lg shadow-lg flex"
         style={{ width: `${dimensions.width}px`, height: `${dimensions.height}px` }}
       >
         <Sidebar activePage={activePage} onPageChange={setActivePage} />
         <div className="flex-1 flex flex-col">
           <div className="p-4 border-b flex justify-between items-center">
-            <h2 className="text-xl font-bold">User Profile</h2>
-            <button 
-              onClick={onClose} 
+            <h2 className="text-xl font-bold">Farm Management Profile</h2>
+            <button
+              onClick={onClose}
               className="text-gray-500 hover:text-gray-700"
             >
               ✕

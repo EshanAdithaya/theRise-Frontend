@@ -1,12 +1,11 @@
-// Sidebar.js
 import React from 'react';
 
 const Sidebar = ({ activePage, onPageChange }) => {
   const menuItems = [
     { id: 'account', label: 'Account' },
-    { id: 'socialAccounts', label: 'Social Accounts' },
-    { id: 'paymentInfo', label: 'Payment information and packages' },
-    { id: 'systemLog', label: 'System log' }
+    { id: 'iotDevices', label: 'IoT Devices' },
+    { id: 'paymentInfo', label: 'Payment Information and Subscriptions' },
+    { id: 'systemLog', label: 'System Log' }
   ];
 
   return (
