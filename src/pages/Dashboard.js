@@ -3,7 +3,8 @@ import Sidebar from '../components/Sidebar';
 import Topbar from '../components/header';
 import Welcome from '../components/minipages/dashboard_welcome';
 import Inventory from '../components/minipages/dashboard_inventory';
-import Health from '../components/minipages/dashboard_helth';
+import Health from '../components/minipages/dashboard_health';
+import CropManagement from '../components/minipages/dashboard_CropManagement'; 
 
 function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -22,6 +23,8 @@ function Dashboard() {
         return <Inventory />;
       case 'health':  // Ensure case matches the spelling of the state
         return <Health />;
+        case 'cropManagement':  // Ensure case matches the spelling of the state
+        return <CropManagement />;
       case 'welcome':
       default:
         return <Welcome />;
