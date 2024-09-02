@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, CardHeader, CardContent } from '../miniComponents/card';
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 
 const CropManagement = () => {
   // State for Stocks
@@ -21,46 +21,52 @@ const CropManagement = () => {
   ]);
 
   return (
-    <div className="grid grid-cols-2 gap-4 bg-white rounded-md">
-      {/* Stocks Component */}  
+    <div className="p-6 bg-gray-50 min-h-screen">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Stocks Component */}
         <Card>
-          <CardHeader>Stocks</CardHeader>
+          <CardHeader className="bg-green-600 text-white">
+            <h2 className="text-xl font-semibold">Stocks</h2>
+          </CardHeader>
           <CardContent>
-            <table className="w-full">
-              <thead>
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-100">
                 <tr>
-                  <th className="text-left">Item</th>
-                  <th className="text-right">Quantity</th>
-                  <th className="text-right">Unit</th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item</th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Unit</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="bg-white divide-y divide-gray-200">
                 {stocks.map((item, index) => (
                   <tr key={index}>
-                    <td className="text-left">{item.name}</td>
-                    <td className="text-right">{item.quantity}</td>
-                    <td className="text-right">{item.unit}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{item.name}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">{item.quantity}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-right">{item.unit}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </CardContent>
         </Card>
-      
 
-      {/* Analytics Component */}
-      <Card>
-        <CardHeader>Analytics</CardHeader>
-        <CardContent>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={chartData}>
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Bar dataKey="yield" fill="#8884d8" />
-            </BarChart>
-          </ResponsiveContainer>
-        </CardContent>
-      </Card>
+        {/* Analytics Component */}
+        <Card>
+          <CardHeader className="bg-blue-600 text-white">
+            <h2 className="text-xl font-semibold">Analytics</h2>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={chartData}>
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="yield" fill="#8884d8" />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
