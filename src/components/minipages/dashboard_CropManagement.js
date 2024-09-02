@@ -1,44 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, CardHeader, CardContent } from '../miniComponents/card';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from 'recharts';
 
-// Stocks component
-const Stocks = () => {
+const CropManagement = () => {
+  // State for Stocks
   const [stocks, setStocks] = useState([
     { name: 'Seeds', quantity: 500, unit: 'kg' },
     { name: 'Fertilizer', quantity: 200, unit: 'kg' },
     { name: 'Pesticides', quantity: 50, unit: 'L' },
   ]);
 
-  return (
-    <Card>
-      <CardHeader>Stocks</CardHeader>
-      <CardContent>
-        <table className="w-full">
-          <thead>
-            <tr>
-              <th className="text-left">Item</th>
-              <th className="text-right">Quantity</th>
-              <th className="text-right">Unit</th>
-            </tr>
-          </thead>
-          <tbody>
-            {stocks.map((item, index) => (
-              <tr key={index}>
-                <td className="text-left">{item.name}</td>
-                <td className="text-right">{item.quantity}</td>
-                <td className="text-right">{item.unit}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </CardContent>
-    </Card>
-  );
-};
-
-// Analytics component
-const Analytics = () => {
+  // State for Analytics
   const [chartData, setChartData] = useState([
     { name: 'Jan', yield: 1500 },
     { name: 'Feb', yield: 1800 },
@@ -49,27 +21,46 @@ const Analytics = () => {
   ]);
 
   return (
-    <Card>
-      <CardHeader>Analytics</CardHeader>
-      <CardContent>
-        <ResponsiveContainer width="100%" height={300}>
-          <BarChart data={chartData}>
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Bar dataKey="yield" fill="#8884d8" />
-          </BarChart>
-        </ResponsiveContainer>
-      </CardContent>
-    </Card>
-  );
-};
+    <div className="grid grid-cols-2 gap-4 bg-white rounded-md">
+      {/* Stocks Component */}  
+        <Card>
+          <CardHeader>Stocks</CardHeader>
+          <CardContent>
+            <table className="w-full">
+              <thead>
+                <tr>
+                  <th className="text-left">Item</th>
+                  <th className="text-right">Quantity</th>
+                  <th className="text-right">Unit</th>
+                </tr>
+              </thead>
+              <tbody>
+                {stocks.map((item, index) => (
+                  <tr key={index}>
+                    <td className="text-left">{item.name}</td>
+                    <td className="text-right">{item.quantity}</td>
+                    <td className="text-right">{item.unit}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </CardContent>
+        </Card>
+      
 
-// Crop Management page
-const CropManagement = () => {
-  return (
-    <div className="grid grid-cols-2 gap-4">
-      <Stocks />
-      <Analytics />
+      {/* Analytics Component */}
+      <Card>
+        <CardHeader>Analytics</CardHeader>
+        <CardContent>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={chartData}>
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Bar dataKey="yield" fill="#8884d8" />
+            </BarChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
     </div>
   );
 };
