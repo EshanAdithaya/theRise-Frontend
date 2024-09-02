@@ -1,88 +1,119 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { FaPlus } from 'react-icons/fa';
-import InventoryList from './InventoryList';
+import { FaBell, FaQuestionCircle, FaBox, FaExclamationTriangle, FaHistory } from 'react-icons/fa';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import InventoryOverview from './InventoryOverview';
+import InventoryList from './InventoryList';
 import AddItemForm from './AddItemForm';
-import Modal from './Modal';
+import Alert from './Alert.js';
+
+const mockChartData = [
+  { category: 'Seeds', count: 50 },
+  { category: 'Fertilizers', count: 30 },
+  { category: 'Tools', count: 20 },
+  { category: 'Pesticides', count: 15 },
+  { category: 'Machinery', count: 5 },
+];
 
 const InventoryManagement = () => {
   const [inventory, setInventory] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [alerts, setAlerts] = useState([]);
 
   useEffect(() => {
+    // Fetch inventory data
     fetchInventory();
+
+    // Simulate real-time alerts
+    const interval = setInterval(() => {
+      const newAlert = {
+        id: Date.now(),
+        title: 'Low Stock Alert',
+        description: 'Fertilizer XYZ is running low. Consider restocking soon.',
+      };
+      setAlerts(prevAlerts => [...prevAlerts, newAlert]);
+    }, 15000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const fetchInventory = async () => {
-    try {
-      const response = await axios.get('/api/inventory');
-      setInventory(response.data);
-    } catch (error) {
-      console.error('Error fetching inventory:', error);
-    }
+    // Simulated API call
+    const mockInventory = [
+      { id: 1, name: 'Tomato Seeds', category: 'Seeds', quantity: 500, unitPrice: 0.5, expirationDate: '2024-12-31' },
+      { id: 2, name: 'NPK Fertilizer', category: 'Fertilizers', quantity: 100, unitPrice: 25, expirationDate: '2025-06-30' },
+      { id: 3, name: 'Pruning Shears', category: 'Tools', quantity: 50, unitPrice: 15, expirationDate: null },
+    ];
+    setInventory(mockInventory);
   };
 
-  const handleAddItem = async (newItem) => {
-    try {
-      const response = await axios.post('/api/inventory', newItem);
-      setInventory([...inventory, response.data]);
-      setIsModalOpen(false);
-    } catch (error) {
-      console.error('Error adding item to inventory:', error);
-    }
+  const handleAddItem = (newItem) => {
+    setInventory(prevInventory => [...prevInventory, { ...newItem, id: Date.now() }]);
   };
 
-  const handleUpdateItem = async (updatedItem) => {
-    try {
-      await axios.put(`/api/inventory/${updatedItem.id}`, updatedItem);
-      const updatedInventory = inventory.map((item) =>
-        item.id === updatedItem.id ? updatedItem : item
-      );
-      setInventory(updatedInventory);
-    } catch (error) {
-      console.error('Error updating inventory:', error);
-    }
+  const handleUpdateItem = (updatedItem) => {
+    setInventory(prevInventory => prevInventory.map(item => 
+      item.id === updatedItem.id ? updatedItem : item
+    ));
   };
 
-  const handleDeleteItem = async (itemId) => {
-    try {
-      await axios.delete(`/api/inventory/${itemId}`);
-      const updatedInventory = inventory.filter((item) => item.id !== itemId);
-      setInventory(updatedInventory);
-    } catch (error) {
-      console.error('Error deleting item from inventory:', error);
-    }
+  const handleDeleteItem = (itemId) => {
+    setInventory(prevInventory => prevInventory.filter(item => item.id !== itemId));
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-8">Inventory Management</h1>
-      <InventoryOverview inventory={inventory} />
-      <div className="mt-8 mb-4">
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        >
-          <FaPlus className="mr-2" />
-          Add New Item
-        </button>
-      </div>
-      <InventoryList
-        inventory={inventory}
-        onUpdateItem={handleUpdateItem}
-        onDeleteItem={handleDeleteItem}
-      />
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        title="Add New Item"
-      >
-        <AddItemForm
-          onAddItem={handleAddItem}
-          onCancel={() => setIsModalOpen(false)}
+    <div className="bg-gray-100 min-h-screen p-8">
+      <div className="container mx-auto max-w-6xl">
+        <header className="mb-10 text-center">
+          <h1 className="text-4xl font-bold text-gray-800">Inventory Management Dashboard</h1>
+          <p className="text-gray-600 mt-2">Monitor and manage your farm's inventory in real-time</p>
+        </header>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <InventoryOverview inventory={inventory} />
+
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+              <FaBell className="mr-2 text-yellow-500" />
+              Alerts
+            </h2>
+            <div className="space-y-4 max-h-60 overflow-y-auto">
+              {alerts.map(alert => (
+                <Alert key={alert.id} variant="warning">
+                  <h3 className="font-semibold">{alert.title}</h3>
+                  <p>{alert.description}</p>
+                </Alert>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg shadow-md mb-8">
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">Inventory Distribution</h2>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={mockChartData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="category" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="count" fill="#4f46e5" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        <InventoryList 
+          inventory={inventory} 
+          onUpdateItem={handleUpdateItem} 
+          onDeleteItem={handleDeleteItem} 
         />
-      </Modal>
+
+        <AddItemForm onAddItem={handleAddItem} />
+
+        <div className="mt-8 text-center">
+          <button className="text-blue-600 hover:text-blue-700 flex items-center justify-center mx-auto">
+            <FaQuestionCircle className="mr-2" />
+            View Inventory Guide
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
