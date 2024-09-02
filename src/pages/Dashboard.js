@@ -3,6 +3,7 @@ import Sidebar from '../components/Sidebar';
 import Topbar from '../components/header';
 import Welcome from '../components/minipages/dashboard_welcome';
 import Inventory from '../components/minipages/dashboard_inventory';
+import Health from '../components/minipages/dashboard_helth';
 
 function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -19,6 +20,8 @@ function Dashboard() {
     switch (activePage) {
       case 'inventory':
         return <Inventory />;
+      case 'health':  // Ensure case matches the spelling of the state
+        return <Health />;
       case 'welcome':
       default:
         return <Welcome />;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import dashboardIco from '../asset/icons/dashboard.png';
 import userIco from '../asset/icons/user.png';
 import scheduleIco from '../asset/icons/schedule.png';
@@ -62,7 +62,7 @@ function Sidebar({ isOpen, onClose, onMenuItemClick }) {
             const IconSrc = iconMapping[item.icon];
             return (
               <a
-                key={item.label}
+                key={item.page}  // Unique key based on page identifier
                 href="#"
                 onClick={() => onMenuItemClick(item.page)}
                 className="group flex items-center px-2 py-3 text-base leading-6 font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:bg-gray-100 transition ease-in-out duration-150"
