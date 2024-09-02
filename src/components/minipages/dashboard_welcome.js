@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Lottie from 'react-lottie';
+import animationData from '../../asset/animations/planter.json';
 
 const DashboardWelcome = () => {
   const [dateTime, setDateTime] = useState(new Date());
@@ -7,16 +9,16 @@ const DashboardWelcome = () => {
   const [location, setLocation] = useState({ lat: null, lon: null });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const API_KEY = 'YOUR_API_KEY_HERE'; // Replace with your OpenWeatherMap API key
+  const API_KEY = 'a43601355f4281bddc9506c3fd3583a9'; 
 
+  // Update the date and time every second
   useEffect(() => {
-    // Update the date and time every second
     const interval = setInterval(() => setDateTime(new Date()), 1000);
     return () => clearInterval(interval);
   }, []);
 
+  // Get user's current location
   useEffect(() => {
-    // Get user's current location
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -37,8 +39,8 @@ const DashboardWelcome = () => {
     }
   }, []);
 
+  // Fetch weather data based on user's location
   useEffect(() => {
-    // Fetch weather data based on user's location
     if (location.lat && location.lon) {
       axios
         .get(
@@ -55,11 +57,23 @@ const DashboardWelcome = () => {
     }
   }, [location, API_KEY]);
 
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice',
+    },
+  };
+
   return (
     <div className="bg-white min-h-screen p-8 rounded-md shadow-lg">
       <div className="container mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold">Welcome to the Dashboard</h1>
+          <div className="animation-container">
+          <Lottie options={defaultOptions} height={100} width={100} />
+        </div>
           <p className="text-lg mt-2">
             Current Date and Time: {dateTime.toLocaleDateString()}{' '}
             {dateTime.toLocaleTimeString()}
@@ -87,7 +101,9 @@ const DashboardWelcome = () => {
                 />
               </div>
               <div>
-                <p className="text-xl font-medium">{weatherData.name}, {weatherData.sys.country}</p>
+                <p className="text-xl font-medium">
+                  {weatherData.name}, {weatherData.sys.country}
+                </p>
                 <p className="text-lg">Temperature: {weatherData.main.temp}°C</p>
                 <p className="text-lg">Weather: {weatherData.weather[0].description}</p>
                 <p className="text-sm text-gray-500">Humidity: {weatherData.main.humidity}%</p>
@@ -100,6 +116,9 @@ const DashboardWelcome = () => {
             </div>
           )}
         </div>
+
+        {/* Lottie Animation after the dashboard content */}
+       
       </div>
     </div>
   );
