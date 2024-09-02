@@ -70,9 +70,9 @@ const DashboardWelcome = () => {
     <div className="bg-white min-h-screen p-8 rounded-md shadow-lg">
       <div className="container mx-auto">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold">Welcome to the Dashboard</h1>
+          <h1 className="text-3xl font-bold">Welcome to the AgrooIT</h1>
           <div className="animation-container">
-          <Lottie options={defaultOptions} height={100} width={100} />
+          <Lottie options={defaultOptions} height={300} width={300} />
         </div>
           <p className="text-lg mt-2">
             Current Date and Time: {dateTime.toLocaleDateString()}{' '}
