@@ -5,6 +5,8 @@ import Welcome from '../components/minipages/dashboard_welcome';
 import Inventory from '../components/minipages/dashboard_inventory';
 import Health from '../components/minipages/dashboard_health';
 import CropManagement from '../components/minipages/dashboard_CropManagement'; 
+import Automation from '../components/minipages/dashboard_automation';
+import Statistics from '../components/minipages/dashboard_Statistics';
 
 function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -25,6 +27,10 @@ function Dashboard() {
         return <Health />;
         case 'cropManagement':  // Ensure case matches the spelling of the state
         return <CropManagement />;
+        case 'automation': // Add automation case
+        return <Automation />;
+        case 'statistics': // Add statistics case
+        return <Statistics />;
       case 'welcome':
       default:
         return <Welcome />;
