@@ -19,18 +19,14 @@ const iconMapping = {
   admin: adminIco,
 };
 
-function Sidebar() {
-  const [isOpen, setIsOpen] = useState(false);
-
+function Sidebar({ isOpen, onClose, onMenuItemClick }) {
   const menuItems = [
-    { icon: "dashboard", label: "Dashboard" },
-    { icon: "user", label: "People" },
-    { icon: "schedule", label: "Schedule" },
-    { icon: "team", label: "Member Details" },
-    { icon: "product", label: "Product/Equipments" },
-    { icon: "review", label: "Review" },
-    { icon: "report", label: "Reports" },
-    { icon: "admin", label: "Administration" }
+    { icon: "dashboard", label: "Dashboard", page: "welcome" },
+    { icon: "user", label: "Inventory", page: "inventory" },
+    { icon: "schedule", label: "Health", page: "health" },
+    { icon: "team", label: "Crop management", page: "cropManagement" },
+    { icon: "product", label: "Automation", page: "automation" },
+    { icon: "review", label: "Statistics", page: "statistics" },
   ];
 
   return (
@@ -38,7 +34,7 @@ function Sidebar() {
       {/* Mobile menu button */}
       <button
         className="md:hidden fixed top-4 left-4 z-20 p-2 rounded-md bg-white shadow-md"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => onClose(!isOpen)}
       >
         <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -49,7 +45,7 @@ function Sidebar() {
       {isOpen && (
         <div
           className="fixed inset-0 z-10 bg-black opacity-50 md:hidden"
-          onClick={() => setIsOpen(false)}
+          onClick={onClose}
         ></div>
       )}
 
@@ -68,6 +64,7 @@ function Sidebar() {
               <a
                 key={item.label}
                 href="#"
+                onClick={() => onMenuItemClick(item.page)}
                 className="group flex items-center px-2 py-3 text-base leading-6 font-medium text-gray-600 rounded-md hover:text-gray-900 hover:bg-gray-50 focus:outline-none focus:bg-gray-100 transition ease-in-out duration-150"
               >
                 <img src={IconSrc} alt={`${item.label} icon`} className="mr-4 h-6 w-6" />
